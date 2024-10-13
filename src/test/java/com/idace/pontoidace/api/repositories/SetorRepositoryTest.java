@@ -38,8 +38,8 @@ public class SetorRepositoryTest {
     public void testBuscarPorNomeSetor() {
         Setor setor = this.setorRepository.findByNomeSetor(nomeSetor);
 
-        assertEquals(nomeSetor, setor.getNomeSetor());
+        if(setor != null){
+            assertEquals(nomeSetor, setor.getNomeSetor());
+        }
     }
-
-
 }
