@@ -4,7 +4,6 @@ package com.idace.pontoidace.api.entities;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 
 import com.idace.pontoidace.api.enums.PerfilEnum;
@@ -50,7 +49,19 @@ public class Funcionario implements Serializable {
     @Column(name = "data_atualizacao", nullable = false)
     private Date dataAtualizacao;
     @ManyToOne(fetch = FetchType.EAGER)
-    private Empresa empresa;
+    private Setor setor;
     @OneToMany(mappedBy = "funcionario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Lancamento> lancamentos;
+
+    @PreUpdate
+    public void preUpdate() {
+        dataAtualizacao = new Date();
+    }
+
+    @PrePersist
+    public void prePersist() {
+        final Date atual = new Date();
+        dataCriacao = atual;
+        dataAtualizacao = atual;
+    }
 }

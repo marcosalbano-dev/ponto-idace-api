@@ -38,4 +38,16 @@ public class Lancamento implements Serializable {
     private TipoEnum tipo;
     @ManyToOne(fetch = FetchType.EAGER)
     private Funcionario funcionario;
+
+    @PreUpdate
+    public void preUpdate() {
+        dataAtualizacao = new Date();
+    }
+
+    @PrePersist
+    public void prePersist() {
+        final Date atual = new Date();
+        dataCriacao = atual;
+        dataAtualizacao = atual;
+    }
 }
