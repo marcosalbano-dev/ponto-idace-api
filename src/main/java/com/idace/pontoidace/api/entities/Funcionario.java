@@ -4,6 +4,7 @@ package com.idace.pontoidace.api.entities;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 
 import com.idace.pontoidace.api.enums.PerfilEnum;
@@ -52,6 +53,34 @@ public class Funcionario implements Serializable {
     private Setor setor;
     @OneToMany(mappedBy = "funcionario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Lancamento> lancamentos;
+
+    @Transient
+    public Optional<Float> getQtdHorasTrabalhoDiaOpt() {
+        return Optional.ofNullable(qtdHorasTrabalhoDia);
+    }
+
+    public void setQtdHorasTrabalhoDia(Float qtdHorasTrabalhoDia) {
+        this.qtdHorasTrabalhoDia = qtdHorasTrabalhoDia;
+    }
+
+    @Transient
+    public Optional<Float> getQtdHorasAlmocoOpt() {
+        return Optional.ofNullable(qtdHorasAlmoco);
+    }
+
+    public void setQtdHorasAlmoco(Float qtdHorasAlmoco) {
+        this.qtdHorasAlmoco = qtdHorasAlmoco;
+    }
+
+    @Transient
+    public Optional<BigDecimal> getValorHoraOpt() {
+        return Optional.ofNullable(valorHora);
+    }
+
+    public void setValorHora(BigDecimal valorHora) {
+        this.valorHora = valorHora;
+    }
+
 
     @PreUpdate
     public void preUpdate() {
