@@ -1,6 +1,5 @@
 package com.idace.pontoidace.api.dtos;
 
-import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 
 import java.util.Optional;
