@@ -37,4 +37,9 @@ public class FuncionarioServiceImpl implements FuncionarioService {
         return Optional.ofNullable(this.funcionarioRepository.findById(id).orElse(null));
     }
 
+    public Optional<Funcionario> buscarPorSetor(String setor) {
+        log.info("Buscando funcionário pelo Setor {}", setor);
+        return Optional.ofNullable(this.funcionarioRepository.findBySetor(setor));
+    }
+
 }

@@ -1,96 +1,215 @@
 package com.idace.pontoidace.api.entities;
 
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 import com.idace.pontoidace.api.enums.PerfilEnum;
 
-import java.io.Serializable;
-
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @Table(name = "funcionario")
 public class Funcionario implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    private Long id;
-    @Column(name = "nome", nullable = false)
-    private String nome;
-    @Column(name = "email", nullable = false)
-    private String email;
-    @Column(name = "senha", nullable = false)
-    private String senha;
-    @Column(name = "cpf", nullable = false)
-    private String cpf;
-    @Column(name = "valor_hora", nullable = true)
-    private BigDecimal valorHora;
-    @Column(name = "qtd_horas_trabalho_dia", nullable = true)
-    private Float qtdHorasTrabalhoDia;
-    @Column(name = "qtd_horas_almoco", nullable = true)
-    private Float qtdHorasAlmoco;
-    @Enumerated(EnumType.STRING)
-    @Column(name = "perfil", nullable = false)
-    private PerfilEnum perfil;
-    @Column(name = "data_criacao", nullable = false)
-    private Date dataCriacao;
-    @Column(name = "data_atualizacao", nullable = false)
-    private Date dataAtualizacao;
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Setor setor;
-    @OneToMany(mappedBy = "funcionario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Lancamento> lancamentos;
+	private static final long serialVersionUID = -5754246207015712518L;
+	
+	private Long id;
+	private String nome;
+	private String email;
+	private String senha;
+	private String cpf;
+	private String setor;
+	private BigDecimal valorHora;
+	private Float qtdHorasTrabalhoDia;
+	private Float qtdHorasAlmoco;
+	private PerfilEnum perfil;
+	private Date dataCriacao;
+	private Date dataAtualizacao;
+	private Empresa empresa;
+	private List<Lancamento> lancamentos;
 
-    @Transient
-    public Optional<Float> getQtdHorasTrabalhoDiaOpt() {
-        return Optional.ofNullable(qtdHorasTrabalhoDia);
-    }
+	public Funcionario() {
+	}
 
-    public void setQtdHorasTrabalhoDia(Float qtdHorasTrabalhoDia) {
-        this.qtdHorasTrabalhoDia = qtdHorasTrabalhoDia;
-    }
+	@Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+	public Long getId() {
+		return id;
+	}
 
-    @Transient
-    public Optional<Float> getQtdHorasAlmocoOpt() {
-        return Optional.ofNullable(qtdHorasAlmoco);
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setQtdHorasAlmoco(Float qtdHorasAlmoco) {
-        this.qtdHorasAlmoco = qtdHorasAlmoco;
-    }
+	@Column(name = "nome", nullable = false)
+	public String getNome() {
+		return nome;
+	}
 
-    @Transient
-    public Optional<BigDecimal> getValorHoraOpt() {
-        return Optional.ofNullable(valorHora);
-    }
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
 
-    public void setValorHora(BigDecimal valorHora) {
-        this.valorHora = valorHora;
-    }
+	@Column(name = "email", nullable = false)
+	public String getEmail() {
+		return email;
+	}
 
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    @PreUpdate
+	@Column(name = "cpf", nullable = false)
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+
+	@Column(name = "setor", nullable = false)
+	public String getSetor() {
+		return setor;
+	}
+
+	public void setSetor(String setor) {
+		this.setor = setor;
+	}
+
+	@Column(name = "valor_hora", nullable = true)
+	public BigDecimal getValorHora() {
+		return valorHora;
+	}
+	
+	@Transient
+	public Optional<BigDecimal> getValorHoraOpt() {
+		return Optional.ofNullable(valorHora);
+	}
+
+	public void setValorHora(BigDecimal valorHora) {
+		this.valorHora = valorHora;
+	}
+
+	@Column(name = "qtd_horas_trabalho_dia", nullable = true)
+	public Float getQtdHorasTrabalhoDia() {
+		return qtdHorasTrabalhoDia;
+	}
+	
+	@Transient
+	public Optional<Float> getQtdHorasTrabalhoDiaOpt() {
+		return Optional.ofNullable(qtdHorasTrabalhoDia);
+	}
+
+	public void setQtdHorasTrabalhoDia(Float qtdHorasTrabalhoDia) {
+		this.qtdHorasTrabalhoDia = qtdHorasTrabalhoDia;
+	}
+
+	@Column(name = "qtd_horas_almoco", nullable = true)
+	public Float getQtdHorasAlmoco() {
+		return qtdHorasAlmoco;
+	}
+	
+	@Transient
+	public Optional<Float> getQtdHorasAlmocoOpt() {
+		return Optional.ofNullable(qtdHorasAlmoco);
+	}
+
+	public void setQtdHorasAlmoco(Float qtdHorasAlmoco) {
+		this.qtdHorasAlmoco = qtdHorasAlmoco;
+	}
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "perfil", nullable = false)
+	public PerfilEnum getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(PerfilEnum perfil) {
+		this.perfil = perfil;
+	}
+
+	@Column(name = "data_criacao", nullable = false)
+	public Date getDataCriacao() {
+		return dataCriacao;
+	}
+
+	public void setDataCriacao(Date dataCriacao) {
+		this.dataCriacao = dataCriacao;
+	}
+
+	@Column(name = "data_atualizacao", nullable = false)
+	public Date getDataAtualizacao() {
+		return dataAtualizacao;
+	}
+
+	public void setDataAtualizacao(Date dataAtualizacao) {
+		this.dataAtualizacao = dataAtualizacao;
+	}
+
+	@Column(name = "senha", nullable = false)
+	public String getSenha() {
+		return senha;
+	}
+	
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	public Empresa getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
+	}
+
+	@OneToMany(mappedBy = "funcionario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	public List<Lancamento> getLancamentos() {
+		return lancamentos;
+	}
+
+	public void setLancamentos(List<Lancamento> lancamentos) {
+		this.lancamentos = lancamentos;
+	}
+	
+	@PreUpdate
     public void preUpdate() {
         dataAtualizacao = new Date();
     }
-
+     
     @PrePersist
     public void prePersist() {
         final Date atual = new Date();
         dataCriacao = atual;
         dataAtualizacao = atual;
     }
+
+	@Override
+	public String toString() {
+		return "Funcionario [id=" + id + ", nome=" + nome + ", email=" + email + ", senha=" + senha + ", cpf=" + cpf
+				+ ", valorHora=" + valorHora + ", qtdHorasTrabalhoDia=" + qtdHorasTrabalhoDia + ", qtdHorasAlmoco="
+				+ qtdHorasAlmoco + ", perfil=" + perfil + ", dataCriacao="
+				+ dataCriacao + ", dataAtualizacao=" + dataAtualizacao + ", empresa=" + empresa + "]";
+	}
+
 }
