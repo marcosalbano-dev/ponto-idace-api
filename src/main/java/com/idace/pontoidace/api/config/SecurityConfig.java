@@ -15,7 +15,7 @@ public class SecurityConfig {
 		http
 			.csrf(csrf -> csrf.disable())
 			.authorizeHttpRequests(auth -> auth
-				.requestMatchers("/api/cadastrar-pj", "/api/cadastrar-pf").permitAll()
+				.requestMatchers("/api/cadastrar-pj", "/api/cadastrar-pf", "/api/empresas/**").permitAll()
 				.anyRequest().authenticated()
 			);
 		
