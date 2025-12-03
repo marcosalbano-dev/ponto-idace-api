@@ -26,4 +26,12 @@ public class PasswordUtils {
         BCryptPasswordEncoder bCryptEncoder = new BCryptPasswordEncoder();
         return bCryptEncoder.encode(senha);
     }
+
+    public static boolean senhaValida(String senha, String senhaEncoded) {
+        BCryptPasswordEncoder bCryptEncoder = new BCryptPasswordEncoder();
+        if (senha == null || senha.isEmpty() || senhaEncoded == null || senhaEncoded.isEmpty()) {
+            return false;
+        }
+        return bCryptEncoder.matches(senha, senhaEncoded);
+    }
 }
